@@ -171,7 +171,7 @@ void sceneRepresentationPL::initializeScene(Matrix4f x_0){
         theScene->insert( axesObj );
     }
 
-    // Initialize the ground truth camera object (if hasGT)  TODO: frustrum?? I think it is not necessary but in case...
+    // Initialize the ground truth camera object
     if(hasGT){
         gtObj = opengl::stock_objects::BumblebeeCamera();
         {
