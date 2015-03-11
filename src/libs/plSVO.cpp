@@ -478,6 +478,12 @@ void plSVO::f2fTracking(){
                                     lData_(l,k)   = point3D_s(l);
                                     lData_(l+3,k) = point3D_e(l);
                                 }
+                                lData_(13,k) = spoint_L(0);
+                                lData_(14,k) = spoint_L(1);
+                                lData_(15,k) = spoint_R(0);
+                                lData_(16,k) = epoint_L(0);
+                                lData_(17,k) = epoint_L(1);
+                                lData_(18,k) = epoint_R(0);
                                 // Second pair
                                 spoint_L << linesThird[m3].startPointX , linesThird[m3].startPointY , 1.f;
                                 epoint_L << linesThird[m3].endPointX   , linesThird[m3].endPointY ,   1.f;
@@ -493,12 +499,6 @@ void plSVO::f2fTracking(){
                                 lData_(10,k) = linesThird[m3].startPointY;
                                 lData_(11,k) = linesThird[m3].endPointX;
                                 lData_(12,k) = linesThird[m3].endPointY;
-                                lData_(13,k) = linesFirst[m1].startPointX;
-                                lData_(14,k) = linesFirst[m1].startPointY;
-                                lData_(15,k) = linesSecond[m2].startPointX;
-                                lData_(16,k) = linesFirst[m1].endPointX;
-                                lData_(17,k) = linesFirst[m1].endPointY;
-                                lData_(18,k) = linesSecond[m2].endPointX;
                                 lData_(19,k) = linesThird[m3].angle;
                                 k++;
                             }
