@@ -49,7 +49,6 @@ plSVO::plSVO(){
     // Uncertainty Parameters
     sigmaL          = 1.f;              // Standard Deviation
     sigmaP          = 1.f;              // Standard Deviation
-    covThreshold    = 1.f;              // Maximum value of the covariance
 
     // Optimization Parameters
     maxIters        = 4;                // Max number of iterations
@@ -468,7 +467,7 @@ void plSVO::f2fTracking(){
                             line << spoint_R.cross(epoint_R);
                             spoint_R << - (line(2)+line(1)*spoint_L(1) )/line(0) , spoint_L(1) ,  1.f;
                             epoint_R << - (line(2)+line(1)*epoint_L(1) )/line(0) , epoint_L(1) ,  1.f;
-                            if( ( abs(spoint_L(0) - spoint_R(0)) > dispMin ) && ( abs(epoint_L(0) - epoint_R(0)) > dispMin ) ){
+                            if( ( (spoint_L(0) - spoint_R(0)) > dispMin ) && ( (epoint_L(0) - epoint_R(0)) > dispMin ) ){
                                 // ------- Data formation
                                 b_d = baseline / ( f * (cx - spoint_R(0)) + f * (spoint_L(0) - cx) );
                                 point3D_s <<  b_d * f * (spoint_L(0) - cx) ,  b_d * f * (spoint_L(1) - cy) , b_d * f * f;
@@ -932,8 +931,8 @@ void plSVO::optimFunctions(MatrixXf &JtJ_, VectorXf &JtE_, float &errNorm_, Vect
                 cov_q = cov_aux(0);
                 cov_q = 1.f/cov_q;
                 cov_q = q4 * cov_q * 0.5f * bsigmaL_inv;
-                if( cov_p > covThreshold )   cov_p = covThreshold;
-                if( cov_q > covThreshold )   cov_q = covThreshold;
+                if( isinf(cov_p) || isnan(cov_p) )  cov_p = 0.f;
+                if( isinf(cov_q) || isnan(cov_q) )  cov_q = 0.f;
             }
             else{
                 cov_p = 1.f;
@@ -1150,9 +1149,7 @@ void plSVO::optimFunctionsH(MatrixXf &JtJ_, VectorXf &JtE_, float &errNorm_, Vec
                 cov_q = 1.f/cov_q;
                 cov_q = q4 * cov_q * 0.5f * bsigmaL_inv;
                 if( isinf(cov_p) || isnan(cov_p) )  cov_p = 0.f;
-                else if( cov_p > covThreshold )     cov_p = covThreshold;
                 if( isinf(cov_q) || isnan(cov_q) )  cov_q = 0.f;
-                else if( cov_q > covThreshold )     cov_q = covThreshold;
             }
             else{
                 cov_p = 1.f;
@@ -1377,10 +1374,8 @@ void plSVO::calculateWeights(Matrix4f x_optim){
             cov_q = cov_aux(0);
             cov_q = 1.f/cov_q;
             cov_q = q4 * cov_q * 0.5f * bsigmaL_inv;
-
-            if( cov_p > covThreshold )   cov_p = covThreshold;
-            if( cov_q > covThreshold )   cov_q = covThreshold;
-
+            if( isinf(cov_p) || isnan(cov_p) )  cov_p = 0.f;
+            if( isinf(cov_q) || isnan(cov_q) )  cov_q = 0.f;
             W(2*j,2*j) = cov_p;
             W(2*j+1,2*j+1) = cov_q;
 

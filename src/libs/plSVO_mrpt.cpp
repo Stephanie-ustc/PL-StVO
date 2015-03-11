@@ -49,7 +49,6 @@ plSVO::plSVO(){
     // Uncertainty Parameters
     sigmaL          = 1.f;              // Standard Deviation
     sigmaP          = 1.f;              // Standard Deviation
-    covThreshold    = 1.f;              // Maximum value of the covariance
 
     // Optimization Parameters
     maxIters        = 4;                // Max number of iterations
@@ -127,7 +126,6 @@ plSVO::plSVO(string configFile){
     // Uncertainty Parameters
     sigmaP          = config.read_float("PoseOptimization","sigmaP",1.f);
     sigmaL          = config.read_float("PoseOptimization","sigmaL",1.f);
-    covThreshold    = config.read_float("PoseOptimization","covThreshold",1.f);
 
     // Optimization Parameters
     maxIters        = config.read_uint64_t("PoseOptimization","maxIters",4);
@@ -1000,8 +998,8 @@ void plSVO::optimFunctions(MatrixXf &JtJ_, VectorXf &JtE_, float &errNorm_, Vect
                 cov_q = cov_aux(0);
                 cov_q = 1.f/cov_q;
                 cov_q = q4 * cov_q * 0.5f * bsigmaL_inv;
-                if( cov_p > covThreshold )   cov_p = covThreshold;
-                if( cov_q > covThreshold )   cov_q = covThreshold;
+                if( isinf(cov_p) || isnan(cov_p) )  cov_p = 0.f;
+                if( isinf(cov_q) || isnan(cov_q) )  cov_q = 0.f;
             }
             else{
                 cov_p = 1.f;
@@ -1218,9 +1216,7 @@ void plSVO::optimFunctionsH(MatrixXf &JtJ_, VectorXf &JtE_, float &errNorm_, Vec
                 cov_q = 1.f/cov_q;
                 cov_q = q4 * cov_q * 0.5f * bsigmaL_inv;
                 if( isinf(cov_p) || isnan(cov_p) )  cov_p = 0.f;
-                else if( cov_p > covThreshold )     cov_p = covThreshold;
                 if( isinf(cov_q) || isnan(cov_q) )  cov_q = 0.f;
-                else if( cov_q > covThreshold )     cov_q = covThreshold;
             }
             else{
                 cov_p = 1.f;
@@ -1446,8 +1442,8 @@ void plSVO::calculateWeights(Matrix4f x_optim){
             cov_q = 1.f/cov_q;
             cov_q = q4 * cov_q * 0.5f * bsigmaL_inv;
 
-            if( cov_p > covThreshold )   cov_p = covThreshold;
-            if( cov_q > covThreshold )   cov_q = covThreshold;
+            if( isinf(cov_p) || isnan(cov_p) )  cov_p = 0.f;
+            if( isinf(cov_q) || isnan(cov_q) )  cov_q = 0.f;
 
             W(2*j,2*j) = cov_p;
             W(2*j+1,2*j+1) = cov_q;

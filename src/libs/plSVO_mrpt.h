@@ -81,7 +81,7 @@ private:
 
     // Parameters
     unsigned int      nFeatures, nLevels, scale, nOctaves, matchTh, matchDist;
-    float             minDist12, maxStDist, maxF2FDist, maxF2FDisp, scaleFactor, dispMax, alphaMax, horizTh, alphaTh, flowTh, matchPr, dispMin, covThreshold;
+    float             minDist12, maxStDist, maxF2FDist, maxF2FDisp, scaleFactor, dispMax, alphaMax, horizTh, alphaTh, flowTh, matchPr, dispMin;
     unsigned int      state = 1, iters = 0, maxIters, maxItersH, nPoints, nPointsH, nLines, nLinesH, n, Np, Nl, Nmin;
     float             prevErrNorm, errNorm, paramChange, errorChange, huberTh, huberK, huberKL, huberKP, minErrorH, minErrorChangeH, minChange = numeric_limits<double>::epsilon(), homogTh, minError, minErrorChange;
     float             b, b2, sigmaP, sigmaL, bsigmaL, bsigmaL_inv, bsigmaP, bsigmaP_inv, sigmaP2, sigmaP2_inv, baseline, f, cx, cy;

@@ -26,7 +26,7 @@ bumblebeeGrabber::bumblebeeGrabber(){
     bbOptions.get_rectified = true;
     bbOptions.rect_width    = 320;
     bbOptions.rect_height   = 240;
-    bbOptions.videomode     = "VIDEOMODE_320x240RGB";
+    bbOptions.videomode     = "VIDEOMODE_1024x768RGB";
     bbOptions.framerate     = "FRAMERATE_20";
     bb = new CImageGrabber_FlyCapture2(bbOptions);
 }
@@ -38,7 +38,7 @@ bumblebeeGrabber::bumblebeeGrabber(string configFile){
     bbOptions.get_rectified = true;
     bbOptions.rect_width    = config.read_uint64_t("BumblebeeGrabber","width",320);
     bbOptions.rect_height   = config.read_uint64_t("BumblebeeGrabber","height",240);
-    bbOptions.videomode     = config.read_string("BumblebeeGrabber","videomode","VIDEOMODE_320x240RGB");
+    bbOptions.videomode     = config.read_string("BumblebeeGrabber","videomode","VIDEOMODE_1024x768RGB");
     bbOptions.framerate     = config.read_string("BumblebeeGrabber","framerate","FRAMERATE_20");
     bb = new CImageGrabber_FlyCapture2(bbOptions);
 
