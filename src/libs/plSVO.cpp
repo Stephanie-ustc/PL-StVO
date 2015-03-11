@@ -291,7 +291,7 @@ void plSVO::stereoMatching(){
                 m1 = pmatches[i][0].queryIdx;
                 m2 = pmatches[i][0].trainIdx;
                 if( abs(pointsThird[m1].pt.y-pointsFourth[m2].pt.y) <= maxStDist ){         //stereo constraint
-                    if( abs(pointsThird[m1].pt.x-pointsFourth[m2].pt.x) >= dispMin ){       //disparity > dispMin
+                    if( (pointsThird[m1].pt.x-pointsFourth[m2].pt.x) >= dispMin ){          //disparity > dispMin
                         pd1aux.push_back(pdescThird.row(m1));
                         pd2aux.push_back(pdescFourth.row(m2));
                         p1aux.push_back(pointsThird[m1]);
