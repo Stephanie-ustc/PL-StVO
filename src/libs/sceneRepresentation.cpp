@@ -332,7 +332,7 @@ bool sceneRepresentation::updateScene(){
 
     // Update the lines
     lineObj->clear();
-    if(hasLines){        
+    if(hasLines){
         for(int i = 0; i < size(lData,2); i++)
             lineObj->appendLine(lData(0,i),lData(1,i),lData(2,i), lData(3,i),lData(4,i),lData(5,i));
         lineObj->setPose(pose);
@@ -456,10 +456,6 @@ bool sceneRepresentation::updateScene(){
     }
 
     return restart;
-
-}
-
-void sceneRepresentation::plotLandmarksCovariances(){
 
 }
 
