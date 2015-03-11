@@ -63,7 +63,7 @@ void stereoVO(){
     svo.setStereo(K_calib,base_);
     svo.initialize(imgL,imgR);
     svo.setInitialValue(x_0);
-    sceneRepresentationPL   scene(configFile);
+    sceneRepresentation   scene(configFile);
     scene.initializeScene(x_cw);
     cout << " done." << endl << endl;
     // Start the stereo visual odometry algorithm

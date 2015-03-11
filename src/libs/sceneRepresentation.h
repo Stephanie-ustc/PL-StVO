@@ -19,13 +19,13 @@
 **																			**
 *****************************************************************************/
 
-class sceneRepresentationPL{
+class sceneRepresentation{
 
 public:
 
-    sceneRepresentationPL();
-    sceneRepresentationPL(string configFile);
-    ~sceneRepresentationPL();
+    sceneRepresentation();
+    sceneRepresentation(string configFile);
+    ~sceneRepresentation();
     void initialize3DScene(Matrix4f x_0);
     void initialize3DSceneLines(Matrix4f x_0);
     void initialize3DSceneImg(Matrix4f x_0);
@@ -35,6 +35,7 @@ public:
     void initializeScene(Matrix4f x_0, Matrix4f x_0gt);
 
     bool updateScene();
+    void plotLandmarksCovariances();
 
     void setText(int frame_, float time_, int nPoints_, int nPointsH_, int nLines_, int nLinesH_);
     void setCov(MatrixXf cov_);

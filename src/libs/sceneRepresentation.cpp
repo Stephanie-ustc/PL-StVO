@@ -32,7 +32,7 @@ std::string to_string_with_precision(const T a_value, const int n = 6)
 
 // Constructors and destructor
 
-sceneRepresentationPL::sceneRepresentationPL(){
+sceneRepresentation::sceneRepresentation(){
 
     sbb     = 1.0f;
     sref    = 0.2f;
@@ -64,7 +64,7 @@ sceneRepresentationPL::sceneRepresentationPL(){
 
 }
 
-sceneRepresentationPL::sceneRepresentationPL(string configFile){
+sceneRepresentation::sceneRepresentation(string configFile){
 
     CConfigFile config(configFile);
     sbb             = config.read_double("Scene","sbb",1.f);
@@ -103,13 +103,13 @@ sceneRepresentationPL::sceneRepresentationPL(string configFile){
 
 }
 
-sceneRepresentationPL::~sceneRepresentationPL(){
+sceneRepresentation::~sceneRepresentation(){
 
 }
 
 // Initialize the scene
 
-void sceneRepresentationPL::initializeScene(Matrix4f x_0){
+void sceneRepresentation::initializeScene(Matrix4f x_0){
 
     // Initialize the scene and window
     win->setCameraElevationDeg(selev);
@@ -255,7 +255,7 @@ void sceneRepresentationPL::initializeScene(Matrix4f x_0){
 
 // Update the scene
 
-bool sceneRepresentationPL::updateScene(){
+bool sceneRepresentation::updateScene(){
 
     theScene = win->get3DSceneAndLock();
     bool restart = false;
@@ -459,9 +459,13 @@ bool sceneRepresentationPL::updateScene(){
 
 }
 
+void sceneRepresentation::plotLandmarksCovariances(){
+
+}
+
 // Setters
 
-void sceneRepresentationPL::setText(int frame_, float time_, int nPoints_, int nPointsH_, int nLines_, int nLinesH_){
+void sceneRepresentation::setText(int frame_, float time_, int nPoints_, int nPointsH_, int nLines_, int nLinesH_){
     frame    = frame_;
     time     = time_;
     nPoints  = nPoints_;
@@ -471,32 +475,32 @@ void sceneRepresentationPL::setText(int frame_, float time_, int nPoints_, int n
 
 }
 
-void sceneRepresentationPL::setCov(MatrixXf cov_){
+void sceneRepresentation::setCov(MatrixXf cov_){
     cov = cov_;
 }
 
-void sceneRepresentationPL::setPose(Matrix4f x_){
+void sceneRepresentation::setPose(Matrix4f x_){
     x = x_;
 }
 
-void sceneRepresentationPL::setGT(Matrix4f xgt_){
+void sceneRepresentation::setGT(Matrix4f xgt_){
     xgt = xgt_;
 }
 
-void sceneRepresentationPL::setComparison(Matrix4f xcomp_){
+void sceneRepresentation::setComparison(Matrix4f xcomp_){
     xcomp = xcomp_;
 }
 
-void sceneRepresentationPL::setImage(Mat image_){
+void sceneRepresentation::setImage(Mat image_){
     IplImage* iplimage = new IplImage(image_);
     img_mrpt_image.loadFromIplImage( iplimage );
 }
 
-void sceneRepresentationPL::setImage(string image_){
+void sceneRepresentation::setImage(string image_){
     img_mrpt_image.loadFromFile(image_,1);
 }
 
-void sceneRepresentationPL::setLegend(){
+void sceneRepresentation::setLegend(){
     // Initialize the legend
     legend = theScene->createViewport("legend");
     if(hasLegend)
@@ -525,7 +529,7 @@ void sceneRepresentationPL::setLegend(){
     }
 }
 
-void sceneRepresentationPL::setHelp(){
+void sceneRepresentation::setHelp(){
     // Initialize the legend
     help = theScene->createViewport("help");
     img_help = "aux/help.png";
@@ -537,33 +541,33 @@ void sceneRepresentationPL::setHelp(){
         help->setViewportPosition(2000, 2000, 300, 376);
 }
 
-void sceneRepresentationPL::setPoints(CMatrixFloat pData_){
+void sceneRepresentation::setPoints(CMatrixFloat pData_){
     pData = pData_;
 }
 
-void sceneRepresentationPL::setLines(CMatrixFloat lData_){
+void sceneRepresentation::setLines(CMatrixFloat lData_){
     lData = lData_;
 }
 
 // Public methods
 
-bool sceneRepresentationPL::waitUntilClose(){
+bool sceneRepresentation::waitUntilClose(){
     while(win->isOpen());
     return true;
 }
 
-bool sceneRepresentationPL::isOpen(){
+bool sceneRepresentation::isOpen(){
     return win->isOpen();
 }
 
 // Auxiliar methods
 
-CPose3D sceneRepresentationPL::getPoseXYZ(VectorXf x){
+CPose3D sceneRepresentation::getPoseXYZ(VectorXf x){
     CPose3D pose(x(0),x(1),x(2),x(3),x(4),x(5));
     return pose;
 }
 
-CMatrixDouble sceneRepresentationPL::getPoseFormat(Matrix4f T){
+CMatrixDouble sceneRepresentation::getPoseFormat(Matrix4f T){
     CMatrixDouble T_(4,4);
     for(unsigned int i = 0; i < 4; i++){
         for(unsigned int j = 0; j < 4; j++){
@@ -573,7 +577,7 @@ CMatrixDouble sceneRepresentationPL::getPoseFormat(Matrix4f T){
     return T_;
 }
 
-CMatrixDouble33 sceneRepresentationPL::getCovFormat(MatrixXf cov_){
+CMatrixDouble33 sceneRepresentation::getCovFormat(MatrixXf cov_){
     CMatrixDouble33 cov3;
     Matrix3f        cov3_eigen = cov_.block(0,0,3,3);
 
@@ -585,7 +589,7 @@ CMatrixDouble33 sceneRepresentationPL::getCovFormat(MatrixXf cov_){
     return cov3;
 }
 
-bool sceneRepresentationPL::getYPR(float &yaw, float &pitch, float &roll){
+bool sceneRepresentation::getYPR(float &yaw, float &pitch, float &roll){
     double y, p, r;
     pose.getYawPitchRoll(y,p,r);
     yaw   = y;
@@ -593,7 +597,7 @@ bool sceneRepresentationPL::getYPR(float &yaw, float &pitch, float &roll){
     roll  = r;
 }
 
-bool sceneRepresentationPL::getPose(Matrix4f &T){
+bool sceneRepresentation::getPose(Matrix4f &T){
     CMatrixDouble44 T_;
     pose.getHomogeneousMatrix(T_);
     for(unsigned int i = 0; i < 4; i++){
