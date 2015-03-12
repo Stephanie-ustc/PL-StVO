@@ -794,10 +794,10 @@ void plSVO::removeERODE(VectorXf residue_){
 void plSVO::optimFunctions(MatrixXf &JtJ_, VectorXf &JtE_, float &errNorm_, VectorXf &E){
 
     E    = VectorXf::Zero(2*n);
-    MatrixXf J    = MatrixXf::Zero(2*n,6);
     JtJ_ = MatrixXf::Zero(6,6);
     JtE_ = VectorXf::Zero(6);
-    MatrixXf JtW(6,2*n), R(3,3);
+    MatrixXf J = MatrixXf::Zero(2*n,6);
+    MatrixXf R(3,3), JtW = MatrixXf::Zero(6,2*n);
     errNorm_ = 0.f;
 
     // ------ Point Features
@@ -1469,6 +1469,10 @@ Mat plSVO::imageInliersWeights(Matrix4f x_optim){
 
     // Estimates the weights
     calculateWeights(x_optim);
+
+    // If no robust optimization, all the samples are considered as inliers
+    if(!erode)
+        inliers = vector<bool> (nPointsH+nLinesH,true);
 
     // Estimates the maximum and minimum weight values
     for(unsigned int i = 0; i < nPointsH; i++){
