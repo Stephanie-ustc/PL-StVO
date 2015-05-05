@@ -5,6 +5,8 @@ find_package( OpenCV REQUIRED)
 if(COMMAND cmake_policy)
   	cmake_policy(SET CMP0003 NEW)	
 endif(COMMAND cmake_policy)
+link_directories(${OpenCV_LIBS_DIR})
+INCLUDE_DIRECTORIES(${OpenCV2_INCLUDE_DIRS})
 
 SET(DEFAULT_HAS_MRPT ON)
 SET(HAS_MRPT ${DEFAULT_HAS_MRPT} CACHE BOOL "Build the PointGrey Bumblebee2 SVO application that employs the MRPT library")
