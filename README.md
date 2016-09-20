@@ -1,3 +1,7 @@
+This repository is deprecated! Use this one instead:
+
+https://github.com/rubengooj/StVO-PL
+
 # -------------------------------------------------------------------------------------------- #
 #  Stereo Visual Odometry algorithm through the combination of point and line segment features #
 # -------------------------------------------------------------------------------------------- #
